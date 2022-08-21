@@ -32,7 +32,8 @@ pip install -r requirements.txt
 
 ## Usage to spotify
 Just go to your playlist, click on share and copy the Playlist URI. 
-To use the shell interface run
+To use the shell interface run. You must edit `cli.py` and set the values of lines `41,42,43`
+for the `token , user_id, user of spotify`
 
 ``` shell
 python cli.py -s --pl_uri "<url playlist>" --dst "C:\path\to\download"
