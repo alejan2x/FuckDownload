@@ -62,9 +62,6 @@ python cli.py -y --selenium --chromedriver_path "C:\chrome\driver\path" "<url_mi
 ex:: python cli.py -y --selenium --chromedriver_path "C:\Users\roque\Downloads\chromedriver\chromedriver.exe" "https://www.youtube.com/watch?v=gGdGFtwCNBE&list=RDMM&index=1" --dst "C:\Users\roque\Downloads"
 ```
 
-https://www.youtube.com/watch?v=gGdGFtwCNBE&list=RDMM&index=1
-
-
 ``` shell
 download from file
 python cli.py -y --pl_file "<C:\path\to\read\file.txt>" --dst "C:\path\to\download"
