@@ -21,20 +21,22 @@ class controller_common:
         path = os.path.join(download_base_path,dir_name)
 
         if os.path.exists(path):
+            print(f"path is exist: {path}")
             return path
-
-        try:
-            os.makedirs(path)
-            return path
-        except OSError:
-            print("Creation of the download directory failed")
+        else :
+            try:
+                os.makedirs(path)
+                return path
+            except OSError:
+                print("Creation of the download directory failed")
+                sys.exit(1)
 
     def clean_ws(self,path):
 
         print ("\n ===== Delete temporal files ===== ")
-        print ("Wait 20 sec to start delete\n")
+        print ("Waiting ... \n")
         
-        time.sleep (20)
+        time.sleep (3)
 
         if platform.system() == "Windows":
             cmd = ["taskkill", "/f", "/im", "ffmpeg-win64*"]

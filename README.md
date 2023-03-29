@@ -37,6 +37,7 @@ for the `token , user_id, user of spotify`
 
 ``` shell
 python cli.py -s --pl_uri "<url playlist>" --dst "C:\path\to\download"
+ex:: python cli.py -s --pl_uri "https://open.spotify.com/playlist/1ISS7NJiClZjglJfZHuux3" --dst "C:\Users\roque\Downloads"
 ```
 
 ## Usage to youtube
@@ -46,21 +47,28 @@ To use the shell interface run
 ``` shell
 download a track
 python cli.py -y --track_uri "<url track>" --dst "C:\path\to\download"
+ex:: python cli.py -y --track_uri "https://www.youtube.com/watch?v=gGdGFtwCNBE" --dst "C:\Users\roque\Downloads"
 ```
 
 ``` shell
 download playlist
 python cli.py -y --pl_uri "<url ply list valid>" --dst "C:\path\to\download"
+ex:: python cli.py -y --pl_uri "https://www.youtube.com/playlist?list=PLeMi01xRAJp5VsU26WsUjZZJmouazRLr-" --dst "C:\Users\roque\Downloads"
 ```
 
 ``` shell
 download mix youtube playlist with selenium
 python cli.py -y --selenium --chromedriver_path "C:\chrome\driver\path" "<url_mix_youtube_playlist>" --dst "C:\path\to\download"
+ex:: python cli.py -y --selenium --chromedriver_path "C:\Users\roque\Downloads\chromedriver\chromedriver.exe" "https://www.youtube.com/watch?v=gGdGFtwCNBE&list=RDMM&index=1" --dst "C:\Users\roque\Downloads"
 ```
+
+https://www.youtube.com/watch?v=gGdGFtwCNBE&list=RDMM&index=1
+
 
 ``` shell
 download from file
 python cli.py -y --pl_file "<C:\path\to\read\file.txt>" --dst "C:\path\to\download"
+ex:: python cli.py -y --pl_file "C:\Users\roque\Downloads\song.txt" --dst "C:\Users\roque\Downloads"
 ```
 
 

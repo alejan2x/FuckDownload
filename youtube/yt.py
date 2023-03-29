@@ -39,8 +39,11 @@ class controller_youtube:
             print ("\033[1m\033[33m[Error] : playlist invalid url")
             sys.exit(1)
         
+        now = datetime.datetime.now()
+        time_format = now.strftime('%d-%m-%YT%H_%M_%S')
+
         items = Playlist(pl_uri)
-        pl_name = items.title
+        pl_name = f"YouTube-playlist-{time_format}"
         path = common.create_download_directory(pl_name)
         
         res = common.thread_pool(items,path,"download")
