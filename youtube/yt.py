@@ -64,9 +64,10 @@ class controller_youtube:
             lines = txt.readlines()
             for url in lines:
                 urlName = url.replace("\n","").strip()
-                video_ids = re.findall(r"watch\?v=(\S{11})", urlName)
-                url = "https://www.youtube.com/watch?v=" + video_ids[0]
-                items.append(url)
+                if not "##" in urlName:
+                    video_ids = re.findall(r"watch\?v=(\S{11})", urlName)
+                    url = "https://www.youtube.com/watch?v=" + video_ids[0]
+                    items.append(url)
 
         res = common.thread_pool(items,path,"download")
         
