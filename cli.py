@@ -38,9 +38,9 @@ if __name__ == "__main__":
 
         if "--pl_uri" in sys.argv:
 
-            client_api ="a4370a6b0c4146508f20bada60a72724"
-            token_api = "6d9f30c8bd6742faae2c511c9b2bf434"
-            user = "roque"
+            client_api ="<>"
+            token_api = "<>"
+            user = "<>"
             
             pl_uri = sys.argv[sys.argv.index("--pl_uri") + 1]
             spoti = controller_spotify(client_api,token_api,user)
