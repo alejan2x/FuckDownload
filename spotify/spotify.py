@@ -133,4 +133,4 @@ class controller_spotify:
         res = common.thread_pool(items,path,"download")
 
         if res:
-            common.converterto_mp3(pl_details["pl_name"])
+            common.rename_files(pl_details["pl_name"])
