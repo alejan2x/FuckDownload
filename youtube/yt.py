@@ -31,7 +31,7 @@ class controller_youtube:
         res = common.thread_pool(items,path,"download")
         
         if res:
-            common.rename_files(path)
+            common.converterto_mp3(path)
     
     def download_tracks(self, pl_uri):
 
@@ -49,7 +49,7 @@ class controller_youtube:
         res = common.thread_pool(items,path,"download")
 
         if res:
-            common.rename_files(pl_name)
+            common.converterto_mp3(path)
     
     def download_from_file(self,pl_file):
 
@@ -71,8 +71,8 @@ class controller_youtube:
 
         res = common.thread_pool(items,path,"download")
         
-        if res:
-            common.rename_files(path)
+        if res:    
+            common.converterto_mp3(path)
 
     def download_tracks_selenium(self, pl_uri,chromedriver_path):
 
@@ -86,7 +86,7 @@ class controller_youtube:
         res = common.thread_pool(items,path,"download")
 
         if res:
-            common.rename_files(path)
+            common.converterto_mp3(path)
 
     def get_pl_list(self,urlFetch,chromedriver_path):
 

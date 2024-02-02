@@ -51,7 +51,7 @@ class controller_common:
         gppList = [ os.path.join(path,i)
                     for root,dirs,files in os.walk(path)
                         for i in files
-                        if i.endswith(".3gpp") ]
+                        if i.endswith(".mp4") ]
 
         for line in gppList:
             os.remove(line)
@@ -73,10 +73,7 @@ class controller_common:
 
         baseDownload = (os.path.join(download_base_path,pl_name))
 
-        gppList = [ i
-                    for root,dirs,files in os.walk(baseDownload)
-                    for i in files
-                    if i.endswith(".3gpp") ]
+        gppList = os.listdir(baseDownload)
 
         res = self.thread_pool(gppList,baseDownload,"converter")
 
@@ -87,14 +84,16 @@ class controller_common:
 
         print ( f"\nID - {id_thread}: start download")
         link = YouTube(url,on_progress_callback=on_progress)
-        stream = link.streams.filter(only_audio=True).first()
+        stream = link.streams.filter(file_extension='mp4').first()
         stream.download(output_path=folder_output)
 
     def thread_function_converter(self,id_thread,folder,track):
 
         print ( f"\nID - {id_thread}: start convertion")
-        base, ext = os.path.splitext(track)
-        os.rename(os.path.join (folder,track), os.path.join(folder,track.replace(ext,".mp3")))
+        # base, ext = os.path.splitext(track)
+        # os.rename(os.path.join (folder,track), os.path.join(folder,track.replace(ext,".mp3")))
+        video = VideoFileClip(os.path.join (folder,track))
+        video.audio.write_audiofile(os.path.join (folder,track.replace(".mp4",".mp3")))
         
     def thread_pool(self, lista, path, ftype):
 
