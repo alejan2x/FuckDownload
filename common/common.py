@@ -82,10 +82,16 @@ class controller_common:
     
     def thread_function_download(self,id_thread,folder_output,url):
 
-        print ( f"\nID - {id_thread}: start download")
-        link = YouTube(url,on_progress_callback=on_progress)
-        stream = link.streams.filter(file_extension='mp4').first()
-        stream.download(output_path=folder_output)
+        try:
+
+            print ( f"\nID - {id_thread}: start download")
+            link = YouTube(url,on_progress_callback=on_progress)
+            stream = link.streams.filter(file_extension='mp4').first()
+            stream.download(output_path=folder_output)
+        
+        except :
+            print (f"Error to try download : {url}")
+            pass
 
     def thread_function_converter(self,id_thread,folder,track):
 
