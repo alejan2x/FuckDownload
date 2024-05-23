@@ -26,7 +26,7 @@ with YouTube , you can download:
     - mix youtube playlist (is neccesary use chromedriver)
     - simple track
 
-## cipher libray error in pytube 11.0.2
+## cipher library error in pytube 11.0.2
 edit the file Python38\Lib\site-packages\pytube\cypher.py
 `update the line for this`: var_regex = re.compile(r"^\$*\w+\W")
  
