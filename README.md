@@ -5,7 +5,17 @@ it will generate a folder with tracks of mp3's
 if you can download playlist of Spotify you going to visit:
 https://developer.spotify.com/dashboard/login
 and create you client, token, because this tool use REST-API
-to get playlist data. 
+to get playlist data.
+
+Create token
+    - URL Spotify token via api : https://accounts.spotify.com/api/token
+    - Basic Auth :  client_id:token_id
+    - body: x-www-form-urlencoded
+    - key: grant_type key_value: client_credentials
+                   
+Get track list via api:
+    - https://api.spotify.com/v1/playlists/<id_playlist_personal>
+    - Bearer Auth : previusly generated in the before stept
                     
 Spotify controller is based in the proyect Hades 
 https://github.com/norbeyandresg/hades.git
@@ -15,6 +25,10 @@ with YouTube , you can download:
     - track from txt file
     - mix youtube playlist (is neccesary use chromedriver)
     - simple track
+
+## cipher libray error in pytube 11.0.2
+edit the file Python38\Lib\site-packages\pytube\cypher.py
+`update the line for this`: var_regex = re.compile(r"^\$*\w+\W")
  
 ## Prerequisites
 requires an installation of FFmpeg. Download for [Windows](https://www.wikihow.com/Install-FFmpeg-on-Windows), and for [UNIX](https://www.ffmpeg.org/download.html).

@@ -9,6 +9,7 @@ from pytube.cli import on_progress
 
 # example: /home/user/music
 download_base_path = "C:\download"
+failedDownload = "failed_download.txt"
 
 if "--dst" in sys.argv:
         dst = sys.argv[sys.argv.index("--dst") + 1]
@@ -91,6 +92,10 @@ class controller_common:
         
         except :
             print (f"Error to try download : {url}")
+            
+            with open(failedDownload,"w+") as f:
+                f.write(url)
+                f.close()
             pass
 
     def thread_function_converter(self,id_thread,folder,track):

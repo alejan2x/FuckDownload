@@ -18,6 +18,17 @@ DESCRIPTION = """
 #                    and create you client, token, because this tool use REST-API
 #                    to get playlist data. 
 #                    
+#                    Create token
+#                       - URL Spotify token via api : https://accounts.spotify.com/api/token
+#                       - Basic Auth :  client_id:token_id
+#                       - body: x-www-form-urlencoded
+#                       - key: grant_type key_value: client_credentials
+#                   
+#                    Get track list via api:
+#                       - https://api.spotify.com/v1/playlists/<id_playlist_personal>
+#                       - Bearer Auth : previusly generated in the before stept
+#
+#                    
 #                    Spotify controller is based in the proyect Hades 
 #                    https://github.com/norbeyandresg/hades.git
 #
@@ -38,13 +49,13 @@ if __name__ == "__main__":
 
         if "--pl_uri" in sys.argv:
 
-            client_api ="<>"
-            token_api = "<>"
-            user = "<>"
+            client_api ="a4370a6b0c4146508f20bada60a72724"
+            token_api = "6d9f30c8bd6742faae2c511c9b2bf434"
+            user = "roque"
             
             pl_uri = sys.argv[sys.argv.index("--pl_uri") + 1]
             spoti = controller_spotify(client_api,token_api,user)
-            print(figlet_format("Spotify", font="doh"))
+            # print(figlet_format("Spotify", font="doh"))
             spoti.download_tracks(pl_uri)
         
         else :
@@ -56,14 +67,14 @@ if __name__ == "__main__":
         if "--track_uri" in sys.argv:
             track_uri = sys.argv[sys.argv.index("--track_uri") + 1]
             ytb = controller_youtube()
-            print(figlet_format("YouTube", font="doh"))
+            # print(figlet_format("YouTube", font="doh"))
             ytb.download_track(track_uri)
         
         if "--pl_uri" in sys.argv:
             
             pl_uri = sys.argv[sys.argv.index("--pl_uri") + 1]
             ytb = controller_youtube()
-            print(figlet_format("YouTube", font="doh"))
+            # print(figlet_format("YouTube", font="doh"))
             ytb.download_tracks(pl_uri)
         
         if "--selenium" in sys.argv:
@@ -74,7 +85,7 @@ if __name__ == "__main__":
 
                 pl_uri = sys.argv[sys.argv.index("--chromedriver_path") + 2]
                 ytb = controller_youtube()
-                print(figlet_format("YouTube", font="doh"))
+                # print(figlet_format("YouTube", font="doh"))
                 ytb.download_tracks_selenium(pl_uri,chromedriver_path)
 
             else :
