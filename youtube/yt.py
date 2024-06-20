@@ -2,7 +2,9 @@ import os
 import re
 import sys
 import datetime
-from pytube import Playlist
+from pytube import Playlist,YouTube
+from urllib import request as rq
+from youtube_dl import YoutubeDL
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -53,23 +55,47 @@ class controller_youtube:
     
     def download_from_file(self,pl_file):
 
+        items = list()
+        trackslist = list()
+        count = 0
+
         now = datetime.datetime.now()
         time_format = now.strftime('%d-%m-%YT%H_%M_%S')
         pl_name = f"YouTube-list-{time_format}"
         
-        items = list()
         path = common.create_download_directory(pl_name)
 
         with open (pl_file) as txt:
             lines = txt.readlines()
+
+            lines = [line for line in lines if line.strip()]
             for url in lines:
                 urlName = url.replace("\n","").strip()
+                
                 if not "##" in urlName:
                     video_ids = re.findall(r"watch\?v=(\S{11})", urlName)
                     url = "https://www.youtube.com/watch?v=" + video_ids[0]
                     items.append(url)
 
-        res = common.thread_pool(items,path,"download")
+       
+        with YoutubeDL(self.get_ydl_opts(path)) as ydl:
+            for track in items:
+                yt = YouTube(track)
+                titleSong = yt.title
+                titleSong = titleSong.replace(" ", "%20").encode('utf-8').strip()
+                html = rq.urlopen(
+                    f"https://www.youtube.com/results?search_query={titleSong}%20lyrics"
+                )
+               
+                video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+                if video_ids:
+                    url = "https://www.youtube.com/watch?v=" + video_ids[0]
+                    print ( f"Add [{count}] - {url}" )
+                    count = count + 1
+                    trackslist.append(url)
+
+
+        res = common.thread_pool(trackslist,path,"download")
         
         if res:    
             common.converterto_mp3(path)
@@ -117,5 +143,17 @@ class controller_youtube:
 
         return lista
         
-        
+    def get_ydl_opts(self, path):
+        return {
+            "format": "bestaudio/best",
+            "outtmpl": f"{path}/%(id)s.%(ext)s",
+            "ignoreerrors": True,
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "320",
+                }
+            ],
+        }    
         

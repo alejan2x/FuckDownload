@@ -4,7 +4,6 @@ from pyfiglet import figlet_format
 from spotify.spotify import controller_spotify
 from youtube.yt import controller_youtube
 
-
 DESCRIPTION = """
 #######################################################################################
 #    Author: Alejandro Hernandez Roque
@@ -96,7 +95,7 @@ if __name__ == "__main__":
             
             pl_file = sys.argv[sys.argv.index("--pl_file") + 1]
             ytb = controller_youtube()
-            print(figlet_format("YouTube", font="doh"))
+            # print(figlet_format("YouTube", font="doh"))
 
             if os.path.exists(pl_file):
                 ytb.download_from_file(pl_file)
