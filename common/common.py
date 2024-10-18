@@ -8,8 +8,8 @@ from moviepy.editor import *
 from pytube.cli import on_progress
 
 # example: /home/user/music
-download_base_path = "C:\download"
-failedDownload = "failed_download.txt"
+download_base_path = r"C:\Users\ahroque\Downloads\download"
+failedDownload = "log_fail.txt"
 
 if "--dst" in sys.argv:
         dst = sys.argv[sys.argv.index("--dst") + 1]
@@ -87,15 +87,20 @@ class controller_common:
 
             print ( f"\nID - {id_thread}: start download")
             link = YouTube(url,on_progress_callback=on_progress)
-            stream = link.streams.filter(file_extension='mp4').first()
-            stream.download(output_path=folder_output)
+            stream = link.streams.filter(file_extension='mp4',progressive=True).first()
+            stream.download(output_path=folder_output).order_by('resolution').desc()
         
-        except :
-            print (f"Error to try download : {url}")
-            
-            with open(failedDownload,"w+") as f:
-                f.write(url)
+        except Exception as err:
+            print(f"[Error]: Unexpected {err=}, {type(err)=}")
+
+            if os.path.isfile(failedDownload):
+                f = open(failedDownload, "a")
+                f.write(f"\n{url}")
                 f.close()
+            else:
+                with open(failedDownload,"w+") as f:
+                    f.write(url)
+                    f.close()
             pass
 
     def thread_function_converter(self,id_thread,folder,track):

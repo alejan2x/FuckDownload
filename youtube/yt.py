@@ -56,7 +56,6 @@ class controller_youtube:
     def download_from_file(self,pl_file):
 
         items = list()
-        trackslist = list()
         count = 0
 
         now = datetime.datetime.now()
@@ -69,33 +68,19 @@ class controller_youtube:
             lines = txt.readlines()
 
             lines = [line for line in lines if line.strip()]
-            for url in lines:
-                urlName = url.replace("\n","").strip()
-                
-                if not "##" in urlName:
-                    video_ids = re.findall(r"watch\?v=(\S{11})", urlName)
-                    url = "https://www.youtube.com/watch?v=" + video_ids[0]
-                    items.append(url)
+            
+            with YoutubeDL(self.get_ydl_opts(path)) as ydl:
+                for url in lines:
+                    urlName = url.replace("\n","").strip()
+                    
+                    if not "##" in urlName:
+                        video_ids = re.findall(r"watch\?v=(\S{11})", urlName)
+                        url = "https://www.youtube.com/watch?v=" + video_ids[0]
+                        print ( f"Add [{count}] - {url}" )
+                        count = count + 1
+                        items.append(url)
 
-       
-        with YoutubeDL(self.get_ydl_opts(path)) as ydl:
-            for track in items:
-                yt = YouTube(track)
-                titleSong = yt.title
-                titleSong = titleSong.replace(" ", "%20").encode('utf-8').strip()
-                html = rq.urlopen(
-                    f"https://www.youtube.com/results?search_query={titleSong}%20lyrics"
-                )
-               
-                video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
-                if video_ids:
-                    url = "https://www.youtube.com/watch?v=" + video_ids[0]
-                    print ( f"Add [{count}] - {url}" )
-                    count = count + 1
-                    trackslist.append(url)
-
-
-        res = common.thread_pool(trackslist,path,"download")
+        res = common.thread_pool(items,path,"download")
         
         if res:    
             common.converterto_mp3(path)
