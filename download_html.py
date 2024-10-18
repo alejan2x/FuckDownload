@@ -33,7 +33,7 @@ def getHtml(url):
 
 def parse_html(html_data):
     lista = list()
-    for x in soup.find_all('a'):
+    for x in html_data.find_all('a'):
         song = x.string
         if song != None and " - " in song:
             lista.append(song.strip().replace(" ","%20"))
