@@ -1,6 +1,7 @@
 import urllib3
 import re
 from urllib import request as rq
+import bs4
 from bs4 import BeautifulSoup
 from youtube_dl import YoutubeDL
 import datetime
@@ -67,7 +68,28 @@ def search_yt(list_song):
         common.converterto_mp3(path)
 
 if __name__ == '__main__':
-    soup = getHtml("https://101dancehits.bandcamp.com/album/psy-trance-2023-top-100-hits")
-    list_to_search = parse_html(soup)
-    url_list = search_yt(list_to_search)  
-   
+
+    ################################################################
+
+    # soup = getHtml("https://101dancehits.bandcamp.com/album/psy-trance-2023-top-100-hits")
+    # list_to_search = parse_html(soup) 
+    # url_list = search_yt(list_to_search) 
+
+    ################################################################
+
+    artista = ""
+    cancion = ""
+    lista = list()
+
+    soup = getHtml("https://www.letras.com/playlists/1030009/")
+    for x in soup.find_all('li', attrs={"class": "songList-table-row"}):
+        for i in x.find_all('div', class_='songList-table-songName'):
+            for song in i.find_all('span'):
+                cancion =  str (song.string)
+        for i in x.find_all('div', class_='songList-table-songArtist'):
+            for artist in i.find_all('a'):
+                artista = str (artist.string)
+        track = f"{cancion} - {artista}"
+        lista.append(track)
+    
+    print(lista)
