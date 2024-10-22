@@ -100,6 +100,24 @@ if __name__ == '__main__':
 
     # www.letras.com - playlists
 
-    soup = getHtml("https://www.letras.com/playlists/1030009/")
-    list_to_search = parse_html2(soup)
-    url_list = search_yt(list_to_search) 
+    # soup = getHtml("https://www.letras.com/playlists/1030009/")
+    # list_to_search = parse_html2(soup)
+    # url_list = search_yt(list_to_search) 
+
+    import yt_dlp
+
+    URLS = ['https://www.youtube.com/watch?v=X1H5sOc_14U']
+
+    ydl_opts = {
+        'format': 'm4a/bestaudio/best',
+        'outtmpl': r'C:\Users\ahernan3\Downloads\download\%(title)s.%(ext)s',
+        # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors and their arguments
+        'postprocessors': [{  # Extract audio using ffmpeg
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+        }],
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        error_code = ydl.download(URLS) 
+        print (error_code)
