@@ -8,7 +8,7 @@ from moviepy.editor import *
 from pytube.cli import on_progress
 
 # example: /home/user/music
-download_base_path = r"C:\Users\ahroque\Downloads\download"
+download_base_path = r"C:\Users\ahernan3\Downloads\download"
 failedDownload = "log_fail.txt"
 
 if "--dst" in sys.argv:

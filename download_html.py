@@ -32,6 +32,25 @@ def getHtml(url):
     soup = BeautifulSoup(response.data, 'html.parser')
     return soup
 
+def parse_html2(url):
+    
+    artista = ""
+    cancion = ""
+    lista = list()
+    
+    for x in url.find_all('li', attrs={"class": "songList-table-row"}):
+        for i in x.find_all('div', class_='songList-table-songName'):
+            for song in i.find_all('span'):
+                cancion =  str (song.string)
+        for i in x.find_all('div', class_='songList-table-songArtist'):
+            for artist in i.find_all('a'):
+                artista = str (artist.string)
+        track = f"{cancion} - {artista}"
+        track = track.strip().replace(" ","%20").encode("utf-8")
+        lista.append(track)
+    
+    return lista
+
 def parse_html(html_data):
     lista = list()
     for x in html_data.find_all('a'):
@@ -71,25 +90,16 @@ if __name__ == '__main__':
 
     ################################################################
 
+    # 101dancehits.bandcamp.com
+
     # soup = getHtml("https://101dancehits.bandcamp.com/album/psy-trance-2023-top-100-hits")
     # list_to_search = parse_html(soup) 
     # url_list = search_yt(list_to_search) 
 
     ################################################################
 
-    artista = ""
-    cancion = ""
-    lista = list()
+    # www.letras.com - playlists
 
     soup = getHtml("https://www.letras.com/playlists/1030009/")
-    for x in soup.find_all('li', attrs={"class": "songList-table-row"}):
-        for i in x.find_all('div', class_='songList-table-songName'):
-            for song in i.find_all('span'):
-                cancion =  str (song.string)
-        for i in x.find_all('div', class_='songList-table-songArtist'):
-            for artist in i.find_all('a'):
-                artista = str (artist.string)
-        track = f"{cancion} - {artista}"
-        lista.append(track)
-    
-    print(lista)
+    list_to_search = parse_html2(soup)
+    url_list = search_yt(list_to_search) 
