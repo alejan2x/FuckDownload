@@ -88,7 +88,7 @@ class controller_common:
             print ( f"\nID - {id_thread}: start download")
             link = YouTube(url,on_progress_callback=on_progress)
             stream = link.streams.filter(file_extension='mp4',progressive=True).first()
-            stream.download(output_path=folder_output).order_by('resolution').desc()
+            stream.download(output_path=folder_output)
         
         except Exception as err:
             print(f"[Error]: Unexpected {err=}, {type(err)=}")
