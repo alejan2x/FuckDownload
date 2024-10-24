@@ -1,11 +1,9 @@
 import urllib3
 import re
 from urllib import request as rq
-import bs4
 from bs4 import BeautifulSoup
 from youtube_dl import YoutubeDL
 import datetime
-from pytube import Playlist
 
 from common.common import controller_common
 common = controller_common()
@@ -63,28 +61,20 @@ def search_yt(list_song):
 
     count = 0
     items = list()
-
-    now = datetime.datetime.now()
-    time_format = now.strftime('%d-%m-%YT%H_%M_%S')
-    pl_name = f"YouTube-playlist-{time_format}"
-    path = common.create_download_directory(pl_name)
-
-    with YoutubeDL(get_ydl_opts(path)) as ydl:
-        for track in list_song:
-            html = rq.urlopen(
-                f"https://www.youtube.com/results?search_query={track}"
-            )
-            video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
-
-            if video_ids:
-                url = "https://www.youtube.com/watch?v=" + video_ids[0]
-                print ( f"Add [{count}] - {url}" )
-                count = count + 1
-                items.append(url)
     
-    res = common.thread_pool(items,path,"download")
-    if res:
-        common.converterto_mp3(path)
+    for track in list_song:
+        html = rq.urlopen(
+            f"https://www.youtube.com/results?search_query={track}"
+        )
+        video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+
+        if video_ids:
+            url = "https://www.youtube.com/watch?v=" + video_ids[0]
+            print ( f"Add [{count}] - {url}" )
+            count = count + 1
+            items.append(url)
+    
+    return items
 
 if __name__ == '__main__':
 
@@ -92,9 +82,9 @@ if __name__ == '__main__':
 
     # 101dancehits.bandcamp.com
 
-    # soup = getHtml("https://101dancehits.bandcamp.com/album/psy-trance-2023-top-100-hits")
-    # list_to_search = parse_html(soup) 
-    # url_list = search_yt(list_to_search) 
+    soup = getHtml("https://101dancehits.bandcamp.com/album/psy-trance-2023-top-100-hits")
+    list_to_search = parse_html(soup) 
+    url_list = search_yt(list_to_search) 
 
     ################################################################
 
@@ -102,22 +92,14 @@ if __name__ == '__main__':
 
     # soup = getHtml("https://www.letras.com/playlists/1030009/")
     # list_to_search = parse_html2(soup)
-    # url_list = search_yt(list_to_search) 
+    # url_list = search_yt(list_to_search)
 
-    import yt_dlp
+    ################################################################
 
-    URLS = ['https://www.youtube.com/watch?v=X1H5sOc_14U']
+    now = datetime.datetime.now()
+    time_format = now.strftime('%d-%m-%YT%H_%M_%S')
+    pl_name = f"YouTube-playlist-{time_format}"
+    folder_path = common.create_download_directory(pl_name)
 
-    ydl_opts = {
-        'format': 'm4a/bestaudio/best',
-        'outtmpl': r'C:\Users\ahernan3\Downloads\download\%(title)s.%(ext)s',
-        # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors and their arguments
-        'postprocessors': [{  # Extract audio using ffmpeg
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-        }],
-    }
-
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        error_code = ydl.download(URLS) 
-        print (error_code)
+    common.download(url_list,folder_path)
+    print (f"\n#### MP3 Folder was created in: {folder_path} ####")
