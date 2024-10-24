@@ -2,9 +2,7 @@ import os
 import re
 import sys
 import datetime
-from pytube import Playlist,YouTube
-from urllib import request as rq
-from youtube_dl import YoutubeDL
+from pytube import Playlist
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -16,6 +14,13 @@ from common.common import controller_common
 common = controller_common()
 
 class controller_youtube:
+
+    def download_yt(tracksList,output_folder):
+
+        common.download(tracksList,output_folder)
+        print (f"\n#### MP3 Folder was created in: {output_folder} ####")
+        sys.exit(0)
+
 
     def download_track (self,track_uri):
         
@@ -30,10 +35,7 @@ class controller_youtube:
         url = "https://www.youtube.com/watch?v=" + video_ids[0]
         items.append(url)
 
-        res = common.thread_pool(items,path,"download")
-        
-        if res:
-            common.converterto_mp3(path)
+        self.download_yt(items,path)
     
     def download_tracks(self, pl_uri):
 
@@ -48,10 +50,7 @@ class controller_youtube:
         pl_name = f"YouTube-playlist-{time_format}"
         path = common.create_download_directory(pl_name)
         
-        res = common.thread_pool(items,path,"download")
-
-        if res:
-            common.converterto_mp3(path)
+        self.download_yt(items,path)
     
     def download_from_file(self,pl_file):
 
@@ -68,22 +67,17 @@ class controller_youtube:
             lines = txt.readlines()
 
             lines = [line for line in lines if line.strip()]
-            
-            with YoutubeDL(self.get_ydl_opts(path)) as ydl:
-                for url in lines:
-                    urlName = url.replace("\n","").strip()
-                    
-                    if not "##" in urlName:
-                        video_ids = re.findall(r"watch\?v=(\S{11})", urlName)
-                        url = "https://www.youtube.com/watch?v=" + video_ids[0]
-                        print ( f"Add [{count}] - {url}" )
-                        count = count + 1
-                        items.append(url)
+            for url in lines:
+                urlName = url.replace("\n","").strip()
+                
+                if not "##" in urlName:
+                    video_ids = re.findall(r"watch\?v=(\S{11})", urlName)
+                    url = "https://www.youtube.com/watch?v=" + video_ids[0]
+                    print ( f"Add [{count}] - {url}" )
+                    count = count + 1
+                    items.append(url)
 
-        res = common.thread_pool(items,path,"download")
-        
-        if res:    
-            common.converterto_mp3(path)
+        self.download_yt(items,path)
 
     def download_tracks_selenium(self, pl_uri,chromedriver_path):
 
@@ -94,10 +88,7 @@ class controller_youtube:
         items = self.get_pl_list(pl_uri,chromedriver_path)
         path = common.create_download_directory(pl_name)
         
-        res = common.thread_pool(items,path,"download")
-
-        if res:
-            common.converterto_mp3(path)
+        self.download_yt(items,path)
 
     def get_pl_list(self,urlFetch,chromedriver_path):
 
