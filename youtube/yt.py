@@ -21,7 +21,6 @@ class controller_youtube:
         print (f"\n#### MP3 Folder was created in: {output_folder} ####")
         sys.exit(0)
 
-
     def download_track (self,track_uri):
         
         items = list()
