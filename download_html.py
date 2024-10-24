@@ -82,17 +82,17 @@ if __name__ == '__main__':
 
     # 101dancehits.bandcamp.com
 
-    soup = getHtml("https://101dancehits.bandcamp.com/album/psy-trance-2023-top-100-hits")
-    list_to_search = parse_html(soup) 
-    url_list = search_yt(list_to_search) 
+    # soup = getHtml("https://101dancehits.bandcamp.com/album/psy-trance-2023-top-100-hits")
+    # list_to_search = parse_html(soup) 
+    # url_list = search_yt(list_to_search) 
 
     ################################################################
 
     # www.letras.com - playlists
 
-    # soup = getHtml("https://www.letras.com/playlists/1030009/")
-    # list_to_search = parse_html2(soup)
-    # url_list = search_yt(list_to_search)
+    soup = getHtml("https://www.letras.com/playlists/1173891/")
+    list_to_search = parse_html2(soup)
+    url_list = search_yt(list_to_search)
 
     ################################################################
 

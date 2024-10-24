@@ -6,6 +6,7 @@ from urllib.parse import quote
 from urllib import request as rq
 from youtube_dl import YoutubeDL
 from spotipy.oauth2 import SpotifyClientCredentials
+import sys
 
 ## fix to skip use for PYTHONPATH
 sys.path.append(os.getcwd())
@@ -130,7 +131,6 @@ class controller_spotify:
                     count = count + 1
                     items.append(url)
 
-        res = common.thread_pool(items,path,"download")
-
-        if res:
-            common.rename_files(pl_details["pl_name"])
+        common.download(items,path)
+        print (f"\n#### MP3 Folder was created in: {path} ####")
+        sys.exit(0)
