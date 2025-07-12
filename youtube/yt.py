@@ -15,7 +15,7 @@ common = controller_common()
 
 class controller_youtube:
 
-    def download_yt(tracksList,output_folder):
+    def download_yt(self,tracksList,output_folder):
 
         common.download(tracksList,output_folder)
         print (f"\n#### MP3 Folder was created in: {output_folder} ####")
