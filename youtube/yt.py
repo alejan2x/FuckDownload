@@ -3,7 +3,6 @@ import re
 import sys
 import datetime
 from pytube import Playlist
-import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
