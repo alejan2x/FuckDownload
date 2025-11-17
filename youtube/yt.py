@@ -3,6 +3,7 @@ import re
 import sys
 import datetime
 from pytube import Playlist
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -117,18 +118,3 @@ class controller_youtube:
             lista.append(url_video)
 
         return lista
-        
-    def get_ydl_opts(self, path):
-        return {
-            "format": "bestaudio/best",
-            "outtmpl": f"{path}/%(id)s.%(ext)s",
-            "ignoreerrors": True,
-            "postprocessors": [
-                {
-                    "key": "FFmpegExtractAudio",
-                    "preferredcodec": "mp3",
-                    "preferredquality": "320",
-                }
-            ],
-        }    
-        

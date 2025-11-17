@@ -1,6 +1,7 @@
 import sys
 import os
 import yt_dlp
+import subprocess
 
 # example: /home/user/music
 download_base_path = r"C:\Users\ahroque\Downloads\download"
@@ -25,21 +26,15 @@ class controller_common:
     
     def download(self,URLS,ouput_folder):
 
+        subprocess.run(["yt-dlp", "--rm-cache-dir"], check=True) ## delete cache dir
+
         try:
 
             print (ouput_folder)
 
             output_file = os.path.join(ouput_folder,'%(title)s.%(ext)s')
 
-            ydl_opts = {
-                'format': 'm4a/bestaudio/best',
-                'outtmpl': output_file,
-                # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors and their arguments
-                'postprocessors': [{  # Extract audio using ffmpeg
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'mp3',
-                }],
-            }
+            ydl_opts = self.get_ydl_opts(output_file) 
 
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 error_code = ydl.download(URLS) 
@@ -47,4 +42,19 @@ class controller_common:
 
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
-            raise
+            sys.exit(1)
+
+    def get_ydl_opts(self, output):
+        return {
+            "format": "bestaudio/best",
+            "outtmpl": output,
+            "ignoreerrors": True,
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "320",
+                }
+            ],
+        }    
+        
