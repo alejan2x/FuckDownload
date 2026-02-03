@@ -26,8 +26,6 @@ class controller_common:
     
     def download(self,URLS,ouput_folder):
 
-        subprocess.run(["yt-dlp", "--rm-cache-dir"], check=True) ## delete cache dir
-
         try:
 
             print (ouput_folder)
@@ -46,14 +44,21 @@ class controller_common:
 
     def get_ydl_opts(self, output):
         return {
-            "format": "bestaudio/best",
+            'format': 'best',
+            # 'cookiefile': 'C:/Users/ahroque/Downloads/cookies.txt',
+            # 'cookiesfrombrowser': ('edge', 'Default'),
+            'extractor_args': {
+                'youtube': {
+                    'player_client': ['android']
+                }
+            },
             "outtmpl": output,
             "ignoreerrors": True,
             "postprocessors": [
                 {
                     "key": "FFmpegExtractAudio",
                     "preferredcodec": "mp3",
-                    "preferredquality": "320",
+                    "preferredquality": "192",
                 }
             ],
         }    

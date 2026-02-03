@@ -5,6 +5,7 @@ import datetime
 from pytube import Playlist
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 
 ## fix to skip use for PYTHONPATH 
 sys.path.append(os.getcwd())
@@ -106,14 +107,36 @@ class controller_youtube:
         driver = webdriver.Chrome(chromedriver_path,chrome_options=chrome_options)
         driver.get(url)
         driver.implicitly_wait(30)
-        items = driver.find_elements_by_css_selector("div#items.playlist-items ytd-playlist-panel-video-renderer a#wc-endpoint")
-        
-        for item in items :
-            uri_base = item.get_attribute("href")
-            video_ids = re.findall(r"watch\?v=(\S{11})", uri_base)
-            url_video = "https://www.youtube.com/watch?v=" + video_ids[0]
-            print ( f"Add [{count}] - {url_video}" )
-            count = count + 1
-            lista.append(url_video)
 
-        return lista
+        ## fix to list private
+        if "--private" in sys.argv:
+            h3_elements = driver.find_elements(By.TAG_NAME, "a")
+            for h3 in h3_elements:
+                class_attr = h3.get_attribute("href")
+                if class_attr is not None:
+                    if "watch?" in class_attr:
+                        lista.append(class_attr)
+            
+            clean_list = list(set(lista))
+            
+            driver.close()
+            driver.quit()
+            
+            return (clean_list)
+    
+        ## run normally
+        else:
+            items = driver.find_elements_by_css_selector("div#items.playlist-items ytd-playlist-panel-video-renderer a#wc-endpoint")
+            for item in items :
+                uri_base = item.get_attribute("href")
+                video_ids = re.findall(r"watch\?v=(\S{11})", uri_base)
+                url_video = "https://www.youtube.com/watch?v=" + video_ids[0]
+                print ( f"Add [{count}] - {url_video}" )
+                count = count + 1
+                lista.append(url_video)
+            
+            driver.close()
+            driver.quit()
+
+            return lista
+
