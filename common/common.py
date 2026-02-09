@@ -3,6 +3,8 @@ import os
 import yt_dlp
 import subprocess
 
+import time
+
 # example: /home/user/music
 download_base_path = r"C:\Users\ahroque\Downloads\download"
 
@@ -26,34 +28,49 @@ class controller_common:
     
     def download(self,URLS,ouput_folder):
 
-        try:
+        max_retries = 3
+        attempt = 0
+        success = False
 
-            print (ouput_folder)
+        while attempt < max_retries and not success:
+            try:
+                output_file = os.path.join(ouput_folder,'%(title)s.%(ext)s')
+                subprocess.run(['yt-dlp', '--rm-cache-dir'])
 
-            output_file = os.path.join(ouput_folder,'%(title)s.%(ext)s')
+                ydl_opts = self.get_ydl_opts(output_file) 
 
-            ydl_opts = self.get_ydl_opts(output_file) 
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    error_code = ydl.download(URLS)
+                    if error_code == 0:
+                        success = True
 
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                error_code = ydl.download(URLS) 
-                print (error_code)
-
-        except Exception as err:
-            print(f"Unexpected {err=}, {type(err)=}")
-            sys.exit(1)
-
+            except Exception as err:
+                attempt += 1
+                print(f"Unexpected {err=}, {type(err)=}")
+                if attempt < max_retries:
+                    print("wait 10 sec.")
+                    time.sleep(10)
+                else:
+                    print("Se agotaron los intentos permitidos.")
+                
     def get_ydl_opts(self, output):
         return {
-            'format': 'best',
-            # 'cookiefile': 'C:/Users/ahroque/Downloads/cookies.txt',
-            # 'cookiesfrombrowser': ('edge', 'Default'),
+            'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
+            # 'cookiefile': r'C:\Users\ahroque\Downloads\cookies.txt',
+            # 'cookiesfrombrowser': ('chrome', 'default'),
             'extractor_args': {
                 'youtube': {
-                    'player_client': ['android']
+                    'player_client': ['android'],
                 }
             },
+            'concurrent_fragment_downloads': 5,
+            'retries': 10,
+            'fragment_retries': 10,
             "outtmpl": output,
-            "ignoreerrors": True,
+            "ignoreerrors": False,
+            'nocheckcertificate': True,
+            'geo_bypass': True,
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             "postprocessors": [
                 {
                     "key": "FFmpegExtractAudio",
