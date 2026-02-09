@@ -56,8 +56,6 @@ class controller_common:
     def get_ydl_opts(self, output):
         return {
             'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]',
-            # 'cookiefile': r'C:\Users\ahroque\Downloads\cookies.txt',
-            # 'cookiesfrombrowser': ('chrome', 'default'),
             'extractor_args': {
                 'youtube': {
                     'player_client': ['android'],
