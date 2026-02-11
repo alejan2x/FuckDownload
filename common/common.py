@@ -46,7 +46,8 @@ class controller_common:
 
             except Exception as err:
                 attempt += 1
-                print(f"Unexpected {err=}, {type(err)=}")
+                # print(f"Unexpected {err=}, {type(err)=}")
+                print ( f"attempt: {attempt}")
                 if attempt < max_retries:
                     print("wait 10 sec.")
                     time.sleep(10)

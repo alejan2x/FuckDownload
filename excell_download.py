@@ -36,7 +36,7 @@ time_format = now.strftime('%d-%m-%YT%H_%M_%S')
 pl_name = f"YouTube-playlist-{time_format}"
 folder_path = common.create_download_directory(pl_name)
 
-for lista in trozos:
-    common.download(lista,folder_path)
+for x in trozos:
+    common.download(x,folder_path)
     time.sleep(30)
 print (f"\n#### MP3 Folder was created in: {folder_path} ####")
